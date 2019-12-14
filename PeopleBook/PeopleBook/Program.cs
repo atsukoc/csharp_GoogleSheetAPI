@@ -15,72 +15,85 @@ namespace PeopleBook
         static void Main(string[] args)
         {
             Boolean on = true;
-           
+
             while (on)
             {
-                char input = askInputs();
+                char input = askOperation();
 
-                if(input.Equals('r') || input.Equals('R'))
+                if (input.Equals('r') || input.Equals('R'))
                 {
                     Operations.ReadData();
                 }
-                else if(input.Equals('x') || input.Equals('X'))
+                else if (input.Equals('x') || input.Equals('X'))
                 {
                     on = false;
                     Console.WriteLine("Bye");
                     Environment.Exit(0);
                 }
-                else if(input.Equals('i') || input.Equals('I'))
+                else if (input.Equals('i') || input.Equals('I'))
                 {
-                    string first_name;
-                    string last_name;
-                    string street_address;
-                    string state;
-                    string zip;
-                    string country;
-                    string email;
+                    Person person = new Person();
+                    Boolean done = false;
 
-                    // Gather information
-                    askFirstName(out first_name);
-                    askLastName(out last_name);
-                    askStreetAddress(out street_address);
-                    askState(out state);
-                    askZip(out zip);
-                    askCountry(out country);
-                    askEmail(out email);
-
-                    // Display the entered information
-                    Console.WriteLine(String.Format("\n{0} {1}", first_name, last_name));
-                    Console.WriteLine(String.Format("{0}, {1}, {2} {3}", street_address, state, zip, country));
-                    Console.WriteLine(String.Format("Email: {0}\n", email));
-
-                    // Ask if anything needs to be modified before inserting to the google sheet
-                    Console.WriteLine("Is all correct? Enter Y for YES, N for NO");
-                    var response = Console.ReadLine();
-                    char charResponse = Convert.ToChar(response);
-
-                    if (charResponse.Equals('Y') || charResponse.Equals('y'))
+                    while (!done)
                     {
-                        Console.WriteLine("Person added to the spread sheet");
+                        // Gather information
+                        person.askFirstName();
+                        person.askLastName();
+
+                        // Display the entered information
+                        person.display();
+
+                        // Ask if anything needs to be modified before inserting to the google sheet
+                        char validate = validateData();
+
+                        if (validate.Equals('Y') || validate.Equals('y'))
+                        {
+                            done = true;
+                            Console.Write("Information is added to the google sheet");
+                        }
+                        else
+                        {
+                            bool test = false;
+
+                            while (!test)
+                            {
+                                Console.WriteLine("1 | Fix first name");
+                                Console.WriteLine("2 | Fix last name");
+                                int inputNum = Convert.ToInt16(Console.ReadLine());
+
+                                if (inputNum == 1)
+                                    person.askFirstName();
+                                else if (inputNum == 2)
+                                    person.askLastName();
+                                else
+                                    Console.WriteLine("Not implemented yet");
+
+                                person.display();
+                                char doneyet = validateData();
+                                if(doneyet.Equals('y') || doneyet.Equals('Y'))
+                                {
+                                    test = true;
+                                    Console.Write("Information is added to the google sheet");
+                                    done = true;
+                                }
+
+
+                            }
+                            
+
+
+                                    
+
+
+                        }
                     }
-                    else if(charResponse.Equals('N') || charResponse.Equals('n'))
-                    {
-                        Console.WriteLine("What do we need to fix?");
-                    }
-                    else
-                    {
-                        Console.WriteLine("Wrong input");
-                    }
-                }
-                else
-                {
-                    Console.WriteLine("Wrong input");
                 }
             }
             
         }
 
-        static private char askInputs()
+        static private char askOperation()
         {
             Console.WriteLine("\n=========== Menu ==========");
             Console.WriteLine("R | Read the entire sheet");
@@ -92,47 +105,14 @@ namespace PeopleBook
             return charInput;
         }
 
-        static private void askFirstName(out string firstname)
+        static private char validateData()
         {
-            Console.WriteLine("First name?");
-            firstname = Console.ReadLine();
+            Console.WriteLine("Is everything correct? Enter Y for YES, N for NO");
+            var r = Console.ReadLine();
+            char response = Convert.ToChar(r);
+            return response;
         }
-
-        static private void askLastName(out string lastname)
-        {
-            Console.WriteLine("Last name?");
-            lastname = Console.ReadLine();
-        }
-
-        static private void askStreetAddress(out string street)
-        {
-            Console.WriteLine("Street address?");
-            street = Console.ReadLine();
-        }
-
-        static private void askState(out string state)
-        {
-            Console.WriteLine("State?");
-            state = Console.ReadLine();
-        }
-
-        static private void askZip(out string zip)
-        {
-            Console.WriteLine("Zip Code?");
-            zip = Console.ReadLine();
-        }
-
-        static private void askCountry(out string country)
-        {
-            Console.WriteLine("Country?");
-            country = Console.ReadLine();
-        }
-
-        static private void askEmail(out string email)
-        {
-            Console.WriteLine("Email?");
-            email = Console.ReadLine();
-        }
+        
     }
 
 
