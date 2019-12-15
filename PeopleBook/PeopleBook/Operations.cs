@@ -37,9 +37,24 @@ namespace PeopleBook
                 Console.WriteLine("Credential file saved to: " + credPath);
 
             }
-            
+
             return credential;
         }
+
+
+        // Create Google Sheets API service.
+        private static SheetsService CreateGoogleSheetService(ref UserCredential credential){
+            
+            var service = new SheetsService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+
+            return service;
+        }
+
+
 
         public static void WriteData()
         {
@@ -68,14 +83,10 @@ namespace PeopleBook
             }
              */
 
-            // Create Google Sheets API service.
-            var service = new SheetsService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = ApplicationName,
-            });
 
             // Define request parameters.
+
+            SheetsService service = CreateGoogleSheetService(ref credential);
             String range = String.Format("{0}!A2:H", SheetName);
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(SpreadsheetId, range);
@@ -98,7 +109,7 @@ namespace PeopleBook
                 Console.WriteLine("No data found.");
             }
 
-           
+            service.Dispose();
         }
     }
     
