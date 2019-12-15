@@ -23,41 +23,41 @@ namespace PeopleBook
             lastName = last_name;
         }
 
-        public void display()
+        public void Display()
         {
             Console.WriteLine(String.Format("{0} {1}", firstName, lastName));
         }
 
-        public void askFirstName()
+        public void AskFirstName()
         {
             Console.Write("First name? ");
-            setFirstName(Console.ReadLine());
+            SetFirstName(Console.ReadLine());
         }
 
-        public void askLastName()
+        public void AskLastName()
         {
             Console.Write("Last name: ");
-            setLastName(Console.ReadLine());
+            SetLastName(Console.ReadLine());
         }
 
 
         // getters and setters
-        public void setFirstName(string firstName)
+        public void SetFirstName(string firstName)
         {
             this.firstName = firstName;
         }
 
-        public void setLastName(string lastName)
+        public void SetLastName(string lastName)
         {
             this.lastName = lastName;
         }
 
-        public string getFirstName()
+        public string GetFirstName()
         {
             return firstName;
         }
 
-        public string getLastname()
+        public string GetLastname()
         {
             return lastName;
         }

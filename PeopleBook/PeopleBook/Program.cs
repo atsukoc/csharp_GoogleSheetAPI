@@ -18,7 +18,7 @@ namespace PeopleBook
 
             while (on)
             {
-                char input = askOperation();
+                char input = AskOperation();
 
                 if (input.Equals('r') || input.Equals('R'))
                 {
@@ -38,14 +38,14 @@ namespace PeopleBook
                     while (!done)
                     {
                         // Gather information
-                        person.askFirstName();
-                        person.askLastName();
+                        person.AskFirstName();
+                        person.AskLastName();
 
                         // Display the entered information
-                        person.display();
+                        person.Display();
 
                         // Ask if anything needs to be modified before inserting to the google sheet
-                        char validate = validateData();
+                        char validate = ValidateData();
 
                         if (validate.Equals('Y') || validate.Equals('y'))
                         {
@@ -63,14 +63,14 @@ namespace PeopleBook
                                 int inputNum = Convert.ToInt16(Console.ReadLine());
 
                                 if (inputNum == 1)
-                                    person.askFirstName();
+                                    person.AskFirstName();
                                 else if (inputNum == 2)
-                                    person.askLastName();
+                                    person.AskLastName();
                                 else
                                     Console.WriteLine("Not implemented yet");
 
-                                person.display();
-                                char doneyet = validateData();
+                                person.Display();
+                                char doneyet = ValidateData();
                                 if(doneyet.Equals('y') || doneyet.Equals('Y'))
                                 {
                                     test = true;
@@ -93,7 +93,7 @@ namespace PeopleBook
             
         }
 
-        static private char askOperation()
+        static private char AskOperation()
         {
             Console.WriteLine("\n=========== Menu ==========");
             Console.WriteLine("R | Read the entire sheet");
@@ -105,7 +105,7 @@ namespace PeopleBook
             return charInput;
         }
 
-        static private char validateData()
+        static private char ValidateData()
         {
             Console.WriteLine("Is everything correct? Enter Y for YES, N for NO");
             var r = Console.ReadLine();
