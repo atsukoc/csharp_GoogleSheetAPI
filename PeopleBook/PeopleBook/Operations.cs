@@ -19,6 +19,28 @@ namespace PeopleBook
         static String SpreadsheetId = "1_fY6TqTeUETqQR8zEks1mA1TpgsRBgkgJWp2KZtBPpQ";
         static String SheetName = "Sheet1";
 
+
+        private static UserCredential GetCredential()
+        {
+            UserCredential credential;
+
+            using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = "token.json";
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+
+                Console.WriteLine("Credential file saved to: " + credPath);
+
+            }
+            
+            return credential;
+        }
+
         public static void WriteData()
         {
 
@@ -27,8 +49,9 @@ namespace PeopleBook
 
         public static void ReadData()
         {
-            UserCredential credential;
+            UserCredential credential = GetCredential();
 
+            /*
             using (var stream =
             new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
@@ -43,6 +66,7 @@ namespace PeopleBook
                     new FileDataStore(credPath, true)).Result;
                 Console.WriteLine("Credential file saved to: " + credPath);
             }
+             */
 
             // Create Google Sheets API service.
             var service = new SheetsService(new BaseClientService.Initializer()
