@@ -50,6 +50,7 @@ namespace PeopleBook
                         if (validate.Equals('Y') || validate.Equals('y'))
                         {
                             done = true;
+                            Operations.WriteData(ref person);
                             Console.Write("Information is added to the google sheet");
                         }
                         else

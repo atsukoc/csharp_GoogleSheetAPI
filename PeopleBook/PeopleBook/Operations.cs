@@ -56,38 +56,70 @@ namespace PeopleBook
 
 
 
-        public static void WriteData()
+        public static void WriteData(ref Person person)
         {
+            UserCredential credential = GetCredential();
+            SheetsService service = CreateGoogleSheetService(ref credential);
+            String range = String.Format("{0}!A2:B", SheetName);
 
+            int numOfRows = CountRows(service, range);
+            Console.WriteLine("number of rows: " + numOfRows);
+
+
+            /*
+            string firstname = person.GetFirstName();
+            string lastname = person.GetLastname();
+            List<ValueRange> valueRanges = new List<ValueRange>();
+            var rows = new List<IList<Object>>();
+            var values = new List<Object>();
+            values.Add(firstname);
+            values.Add(lastname);
+            rows.Add(values);
+            
+
+            // The A1 notiation of a range to search for a logical table of data
+            String range = String.Format("{0}!A4:B", SheetName);
+
+            // How the input data should be interpreted
+            SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum valueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+
+            // How the input data should be inserted
+            SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum insertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum.INSERTROWS;
+
+            // 
+            ValueRange requestBody = new ValueRange();
+            requestBody.Range = range;
+            requestBody.Values = rows;
+            valueRanges.Add(requestBody);
+
+            */
+
+            service.Dispose();
+                
         }
 
+        private static int CountRows(SheetsService service, string range)
+        {
+
+            SpreadsheetsResource.ValuesResource.GetRequest getRequest =
+                       service.Spreadsheets.Values.Get(SpreadsheetId, range);
+
+            ValueRange getResponse = getRequest.Execute();
+            IList<IList<Object>> getValues = getResponse.Values;
+
+
+            return getValues.Count;
+        }
+
+        
 
         public static void ReadData()
         {
             UserCredential credential = GetCredential();
 
-            /*
-            using (var stream =
-            new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
-            {
-                // The file token.json stores the user's access and refresh tokens, and is created
-                // automatically when the authorization flow completes for the first time.
-                string credPath = "token.json";
-                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    Scopes,
-                    "user",
-                    CancellationToken.None,
-                    new FileDataStore(credPath, true)).Result;
-                Console.WriteLine("Credential file saved to: " + credPath);
-            }
-             */
-
-
             // Define request parameters.
-
             SheetsService service = CreateGoogleSheetService(ref credential);
-            String range = String.Format("{0}!A2:H", SheetName);
+            String range = String.Format("{0}!A2:B", SheetName);
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
@@ -100,7 +132,7 @@ namespace PeopleBook
             {
                 foreach (var row in values)
                 {
-                    Console.WriteLine("ID: {0} | {1} {2}", row[0], row[1], row[2]);
+                    Console.WriteLine("Name | {0} {1}", row[0], row[1]);
                     
                 }
             }
