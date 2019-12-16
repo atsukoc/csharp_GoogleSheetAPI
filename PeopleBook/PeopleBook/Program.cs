@@ -1,12 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Apis.Sheets.v4;
-using Google.Apis.Sheets.v4.Data;
-using Google.Apis.Services;
-using Google.Apis.Util.Store;
+﻿
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 
 namespace PeopleBook
 {
@@ -51,13 +44,12 @@ namespace PeopleBook
                         {
                             done = true;
                             Operations.WriteData(ref person);
-                            Console.Write("Information is added to the google sheet");
                         }
                         else
                         {
-                            bool test = false;
+                            bool updated = false;
 
-                            while (!test)
+                            while (!updated)
                             {
                                 Console.WriteLine("1 | Fix first name");
                                 Console.WriteLine("2 | Fix last name");
@@ -74,8 +66,8 @@ namespace PeopleBook
                                 char doneyet = ValidateData();
                                 if(doneyet.Equals('y') || doneyet.Equals('Y'))
                                 {
-                                    test = true;
-                                    Console.Write("Information is added to the google sheet");
+                                    updated = true;
+                                    Operations.WriteData(ref person);
                                     done = true;
                                 }
 

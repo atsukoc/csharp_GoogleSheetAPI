@@ -25,7 +25,7 @@ namespace PeopleBook
 
         public void Display()
         {
-            Console.WriteLine(String.Format("{0} {1}", firstName, lastName));
+            Console.WriteLine(String.Format("\n{0} {1}\n", firstName, lastName));
         }
 
         public void AskFirstName()

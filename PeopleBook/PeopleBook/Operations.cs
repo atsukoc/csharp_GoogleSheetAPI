@@ -14,7 +14,7 @@ namespace PeopleBook
     {
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
-        static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
+        static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "My first dot net project";
         static String SpreadsheetId = "1_fY6TqTeUETqQR8zEks1mA1TpgsRBgkgJWp2KZtBPpQ";
         static String SheetName = "Sheet1";
@@ -24,7 +24,7 @@ namespace PeopleBook
         {
             UserCredential credential;
 
-            using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream("/Users/Atsuko/git/csharp_people/PeopleBook/PeopleBook/credentials.json", FileMode.Open, FileAccess.Read))
             {
                 string credPath = "token.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
@@ -33,9 +33,6 @@ namespace PeopleBook
                     "user",
                     CancellationToken.None,
                     new FileDataStore(credPath, true)).Result;
-
-                Console.WriteLine("Credential file saved to: " + credPath);
-
             }
 
             return credential;
@@ -60,39 +57,31 @@ namespace PeopleBook
         {
             UserCredential credential = GetCredential();
             SheetsService service = CreateGoogleSheetService(ref credential);
-            String range = String.Format("{0}!A2:B", SheetName);
 
-            int numOfRows = CountRows(service, range);
-            Console.WriteLine("number of rows: " + numOfRows);
+            // find out the current number of rows in the spreadsheet
+            String currentRange = String.Format("{0}!A1:B", SheetName);
+            int rowIndex = CountRows(service, currentRange) + 1;
 
-
-            /*
-            string firstname = person.GetFirstName();
-            string lastname = person.GetLastname();
-            List<ValueRange> valueRanges = new List<ValueRange>();
-            var rows = new List<IList<Object>>();
-            var values = new List<Object>();
-            values.Add(firstname);
-            values.Add(lastname);
-            rows.Add(values);
-            
-
-            // The A1 notiation of a range to search for a logical table of data
-            String range = String.Format("{0}!A4:B", SheetName);
+            // The A1 notation of the values to update
+            string newRange = String.Format("{0}!A{1}:B{1}", SheetName, rowIndex);
 
             // How the input data should be interpreted
-            SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum valueInputOption = SpreadsheetsResource.ValuesResource.AppendRequest.ValueInputOptionEnum.RAW;
+            SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption =
+                SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
-            // How the input data should be inserted
-            SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum insertDataOption = SpreadsheetsResource.ValuesResource.AppendRequest.InsertDataOptionEnum.INSERTROWS;
-
-            // 
             ValueRange requestBody = new ValueRange();
-            requestBody.Range = range;
-            requestBody.Values = rows;
-            valueRanges.Add(requestBody);
+            string firstName = person.GetFirstName();
+            string lastName = person.GetLastname();
+            var values = new List<Object>() { firstName, lastName };
+            requestBody.Values = new List<IList<Object>> { values };
 
-            */
+            SpreadsheetsResource.ValuesResource.UpdateRequest request = service.Spreadsheets.Values.Update(requestBody, SpreadsheetId, newRange);
+            request.ValueInputOption = valueInputOption;
+
+            UpdateValuesResponse result = request.Execute();
+
+            Console.WriteLine("\nData added successfully");
+            Console.WriteLine(String.Format("Number of rows added: {0}", result.UpdatedRows));
 
             service.Dispose();
                 
@@ -116,6 +105,7 @@ namespace PeopleBook
         public static void ReadData()
         {
             UserCredential credential = GetCredential();
+            Console.WriteLine(credential.ToString());
 
             // Define request parameters.
             SheetsService service = CreateGoogleSheetService(ref credential);
