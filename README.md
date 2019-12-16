@@ -1,7 +1,5 @@
 # SCharp_GoogleSheetAPI
 
-<p>This is my very first .NET application that integrates Google Sheet API. <br>
-I have a Google Sheet which acts as my database to store my contacts' addresses and email addresses. Every December, I spend good amount of time updating this database in preparation to send out the Christmas card. 
-I would like to make this application as a tool that does this hedious manual work automatically. 
-
+<p>This is my very firs, on-going .NET application that integrates Google Sheet API. It is a simple Console application that displays all the data in google sheet as well as inserting a new row with values. <br/>
+Eventually, I would like to add the ability to send out the emails using Google Gmail API as well. 
 </p>
