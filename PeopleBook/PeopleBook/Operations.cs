@@ -20,6 +20,10 @@ namespace PeopleBook
         static String SheetName = "Sheet1";
 
 
+        /************************************************************************
+         * This method reads the credential file obtained from Google API and
+         * returns the UserCredential object that is needed for SheetsService
+         * **********************************************************************/
         private static UserCredential GetCredential()
         {
             UserCredential credential;
@@ -39,20 +43,25 @@ namespace PeopleBook
         }
 
 
-        // Create Google Sheets API service.
-        private static SheetsService CreateGoogleSheetService(ref UserCredential credential){
-            
-            var service = new SheetsService(new BaseClientService.Initializer()
-            {
+        /************************************************************************
+         * This method creates and returns the Google Sheets API service
+         * **********************************************************************/
+        private static SheetsService CreateGoogleSheetService(ref UserCredential credential)
+        {
+           var service = new SheetsService(new BaseClientService.Initializer()
+           {
                 HttpClientInitializer = credential,
                 ApplicationName = ApplicationName,
-            });
+           });
 
             return service;
         }
 
 
-
+        /************************************************************************
+        * This method writes the person's information (name, address, email address)
+        * to the google sheet
+        * **********************************************************************/
         public static void WriteData(ref Person person)
         {
             UserCredential credential = GetCredential();
@@ -69,15 +78,18 @@ namespace PeopleBook
             SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption =
                 SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum.USERENTERED;
 
+            // Create and set ValueRange. This is where you set the values to write to the google sheet.
             ValueRange requestBody = new ValueRange();
             string firstName = person.GetFirstName();
             string lastName = person.GetLastname();
             var values = new List<Object>() { firstName, lastName };
             requestBody.Values = new List<IList<Object>> { values };
 
+            // Create UpdateRequest object
             SpreadsheetsResource.ValuesResource.UpdateRequest request = service.Spreadsheets.Values.Update(requestBody, SpreadsheetId, newRange);
             request.ValueInputOption = valueInputOption;
 
+            // Execute the request and get the result
             UpdateValuesResponse result = request.Execute();
 
             Console.WriteLine("\nData added successfully");
@@ -87,6 +99,9 @@ namespace PeopleBook
                 
         }
 
+        /************************************************************************
+ *      This method counts and returns the number of rows in the google sheet
+ *      **********************************************************************/
         private static int CountRows(SheetsService service, string range)
         {
 
@@ -100,8 +115,10 @@ namespace PeopleBook
             return getValues.Count;
         }
 
-        
 
+        /************************************************************************
+ *       * This method displays all the rows in the google sheet
+ *      **********************************************************************/
         public static void ReadData()
         {
             UserCredential credential = GetCredential();
