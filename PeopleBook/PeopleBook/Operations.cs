@@ -100,8 +100,8 @@ namespace PeopleBook
         }
 
         /************************************************************************
- *      This method counts and returns the number of rows in the google sheet
- *      **********************************************************************/
+        * This method counts and returns the number of rows in the google sheet
+        ***********************************************************************/
         private static int CountRows(SheetsService service, string range)
         {
 
@@ -117,8 +117,8 @@ namespace PeopleBook
 
 
         /************************************************************************
- *       * This method displays all the rows in the google sheet
- *      **********************************************************************/
+        * This method displays all the rows in the google sheet
+        * **********************************************************************/
         public static void ReadData()
         {
             UserCredential credential = GetCredential();
