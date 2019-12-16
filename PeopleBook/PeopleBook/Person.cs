@@ -7,7 +7,7 @@ namespace PeopleBook
         private string firstName;
         private string lastName;
         //private Address address;
-        //private Email email;
+        private string email;
 
         /**********************
          * Default Constructor
@@ -17,7 +17,7 @@ namespace PeopleBook
             firstName = null;
             lastName = null;
             //address = null;
-            //email = null;
+            email = null;
         }
 
         /**************************

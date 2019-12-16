@@ -28,7 +28,7 @@ namespace PeopleBook
         {
             UserCredential credential;
 
-            using (var stream = new FileStream("/Users/Atsuko/git/csharp_people/PeopleBook/PeopleBook/credentials.json", FileMode.Open, FileAccess.Read))
+            using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
             {
                 string credPath = "token.json";
                 credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
