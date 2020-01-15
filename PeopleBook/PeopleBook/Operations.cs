@@ -19,7 +19,7 @@ namespace PeopleBook
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
         static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "My first dot net project";
-        static String SpreadsheetId = "1_fY6TqTeUETqQR8zEks1mA1TpgsRBgkgJWp2KZtBPpQ";
+        static String SpreadsheetId = "";
         static String SheetName = "Sheet1";
 
 
