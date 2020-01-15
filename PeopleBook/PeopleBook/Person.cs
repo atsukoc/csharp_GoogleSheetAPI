@@ -7,7 +7,7 @@ namespace PeopleBook
         private string firstName;
         private string lastName;
         //private Address address;
-        private string email;
+        private Email email = new Email();
 
         /**********************
          * Default Constructor
@@ -23,10 +23,11 @@ namespace PeopleBook
         /**************************
          * Non-default constructor
          **************************/
-        public Person(string first_name, string last_name)
+        public Person(string first_name, string last_name, Email email)
         {
             firstName = first_name;
             lastName = last_name;
+            this.email = email;
         }
 
         /**************************************************
@@ -34,7 +35,7 @@ namespace PeopleBook
         ***************************************************/
         public void Display()
         {
-            Console.WriteLine(String.Format("\n{0} {1}\n", firstName, lastName));
+            Console.WriteLine(String.Format("{0} {1} | {2}\n", firstName, lastName, email));
         }
 
         /**************************************************
@@ -57,6 +58,20 @@ namespace PeopleBook
             SetLastName(Console.ReadLine());
         }
 
+        public void AskEmail()
+        {
+            bool isValidAddress = false;
+            string emailAddress = null;
+
+            while (!isValidAddress){
+                Console.Write("Email address: ");
+                emailAddress = Console.ReadLine();
+                isValidAddress = this.email.IsValidEmailAddress(emailAddress);
+            }
+
+            SetEmail(emailAddress);
+        }
+
         /*************************************************
          * Getters and Setters are defined below
          ***********************************************/
@@ -72,6 +87,12 @@ namespace PeopleBook
         }
 
 
+        public void SetEmail(string email)
+        {
+            this.email.SetEmail(email);
+
+        }
+        
         public string GetFirstName()
         {
             return firstName;

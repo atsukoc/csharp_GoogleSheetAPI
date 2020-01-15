@@ -33,6 +33,7 @@ namespace PeopleBook
                         // Gather information
                         person.AskFirstName();
                         person.AskLastName();
+                        person.AskEmail();
 
                         // Display the entered information
                         person.Display();
