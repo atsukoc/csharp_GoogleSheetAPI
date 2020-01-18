@@ -19,7 +19,7 @@ namespace PeopleBook
         // at ~/.credentials/sheets.googleapis.com-dotnet-quickstart.json
         static string[] Scopes = { SheetsService.Scope.Spreadsheets };
         static string ApplicationName = "My first dot net project";
-        static String SpreadsheetId = "";
+        static String SpreadsheetId = "1_fY6TqTeUETqQR8zEks1mA1TpgsRBgkgJWp2KZtBPpQ";
         static String SheetName = "Sheet1";
 
 
@@ -125,11 +125,10 @@ namespace PeopleBook
         public static void ReadData()
         {
             UserCredential credential = GetCredential();
-            Console.WriteLine(credential.ToString());
 
             // Define request parameters.
             SheetsService service = CreateGoogleSheetService(ref credential);
-            String range = String.Format("{0}!A2:B", SheetName);
+            String range = String.Format("{0}!A2:C", SheetName);
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
@@ -142,8 +141,19 @@ namespace PeopleBook
             {
                 foreach (var row in values)
                 {
-                    Console.WriteLine("Name | {0} {1}", row[0], row[1]);
-                    
+                    int count = row.Count;
+                    if(row.Count == 3)
+                    {
+                        Person person = new Person(row[0].ToString(), row[1].ToString(), new Email(row[2].ToString()));
+                        Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
+                    }
+                    if(row.Count == 2)
+                    {
+                        Person person = new Person();
+                        person.SetFirstName(row[0].ToString());
+                        person.SetLastName(row[1].ToString());
+                        Console.WriteLine(String.Format("{0} {1}", person.GetFirstName(), person.GetLastname()));
+                    }
                 }
             }
             else

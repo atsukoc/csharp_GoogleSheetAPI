@@ -7,7 +7,7 @@ namespace PeopleBook
         private string firstName;
         private string lastName;
         //private Address address;
-        private Email email = new Email();
+        private Email email;
 
         /**********************
          * Default Constructor
@@ -66,7 +66,7 @@ namespace PeopleBook
             while (!isValidAddress){
                 Console.Write("Email address: ");
                 emailAddress = Console.ReadLine();
-                isValidAddress = this.email.IsValidEmailAddress(emailAddress);
+                isValidAddress = this.email.IsValid(emailAddress);
             }
 
             SetEmail(emailAddress);
@@ -102,6 +102,11 @@ namespace PeopleBook
         public string GetLastname()
         {
             return lastName;
+        }
+
+        public string GetEmail()
+        {
+            return email.GetEmail();
         }
 
     }
