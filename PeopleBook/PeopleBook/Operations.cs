@@ -21,7 +21,7 @@ namespace PeopleBook
         static string ApplicationName = "My first dot net project";
         static String SpreadsheetId = "1_fY6TqTeUETqQR8zEks1mA1TpgsRBgkgJWp2KZtBPpQ";
         static String SheetName = "Sheet1";
-
+        
 
         /************************************************************************
          * This method reads the credential file obtained from Google API and
@@ -71,11 +71,11 @@ namespace PeopleBook
             SheetsService service = CreateGoogleSheetService(ref credential);
 
             // find out the current number of rows in the spreadsheet
-            String currentRange = String.Format("{0}!A1:B", SheetName);
+            String currentRange = String.Format("{0}!A1:C", SheetName);
             int rowIndex = CountRows(service, currentRange) + 1;
 
             // The A1 notation of the values to update
-            string newRange = String.Format("{0}!A{1}:B{1}", SheetName, rowIndex);
+            string newRange = String.Format("{0}!A{1}:C{1}", SheetName, rowIndex);
 
             // How the input data should be interpreted
             SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption =
@@ -85,7 +85,8 @@ namespace PeopleBook
             ValueRange requestBody = new ValueRange();
             string firstName = person.GetFirstName();
             string lastName = person.GetLastname();
-            var values = new List<Object>() { firstName, lastName };
+            string email = person.GetEmail();
+            var values = new List<Object>() { firstName, lastName, email };
             requestBody.Values = new List<IList<Object>> { values };
 
             // Create UpdateRequest object

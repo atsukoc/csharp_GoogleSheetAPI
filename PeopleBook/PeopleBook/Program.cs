@@ -39,7 +39,7 @@ namespace PeopleBook
                         person.Display();
 
                         // Ask if anything needs to be modified before inserting to the google sheet
-                        char validate = ValidateData();
+                        char validate = ConfirmData();
 
                         if (validate.Equals('Y') || validate.Equals('y'))
                         {
@@ -52,19 +52,17 @@ namespace PeopleBook
 
                             while (!updated)
                             {
-                                Console.WriteLine("1 | Fix first name");
-                                Console.WriteLine("2 | Fix last name");
-                                int inputNum = Convert.ToInt16(Console.ReadLine());
+                                int inputNum = WhatToFix();
 
-                                if (inputNum == 1)
+                                if(inputNum == 1)
                                     person.AskFirstName();
-                                else if (inputNum == 2)
+                                if(inputNum == 2)
                                     person.AskLastName();
-                                else
-                                    Console.WriteLine("Not implemented yet");
+                                if(inputNum == 3)
+                                    person.AskEmail();
 
                                 person.Display();
-                                char doneyet = ValidateData();
+                                char doneyet = ConfirmData();
                                 if(doneyet.Equals('y') || doneyet.Equals('Y'))
                                 {
                                     updated = true;
@@ -72,13 +70,7 @@ namespace PeopleBook
                                     done = true;
                                 }
 
-
                             }
-                            
-
-
-                                    
-
 
                         }
                     }
@@ -89,24 +81,61 @@ namespace PeopleBook
 
         static private char AskOperation()
         {
-            Console.WriteLine("\n=========== Menu ==========");
-            Console.WriteLine("R | Read the entire sheet");
-            Console.WriteLine("I | Add a new person to the sheet");
-            Console.WriteLine("X | Exit");
-            Console.WriteLine("=======================");
-            var input = Console.ReadLine();
-            char charInput = Convert.ToChar(input);
+            bool done = false;
+            char charInput = '\0';
+
+            if (!done)
+            {
+                Console.WriteLine("\n=========== Menu ==========");
+                Console.WriteLine("R | Read the entire sheet");
+                Console.WriteLine("I | Add a new person to the sheet");
+                Console.WriteLine("X | Exit");
+                Console.WriteLine("=======================");
+                var input = Console.ReadLine();
+                charInput = Convert.ToChar(input);
+                if (charInput == 'R' ||
+                    charInput == 'r' ||
+                    charInput == 'I' ||
+                    charInput == 'i' ||
+                    charInput == 'X' ||
+                    charInput == 'x')
+                    done = true;
+            }
+   
             return charInput;
         }
 
-        static private char ValidateData()
+        static private char ConfirmData()
         {
             Console.WriteLine("Is everything correct? Enter Y for YES, N for NO");
             var r = Console.ReadLine();
             char response = Convert.ToChar(r);
             return response;
         }
-        
+
+        static private int WhatToFix()
+        {
+            bool done = false;
+            int inputNum = 0;
+
+            while (!done)
+            {
+                Console.WriteLine("1 | Fix first name");
+                Console.WriteLine("2 | Fix last name");
+                Console.WriteLine("3 | Fix email address");
+                Console.WriteLine("4 | Never mind, don't need to fix anything");
+                inputNum = Convert.ToInt16(Console.ReadLine());
+
+                // check the input number
+                if (inputNum < 0 || inputNum > 4)
+                    Console.WriteLine("Please choose 1-4");
+                else
+                    done = true;
+            }
+
+            return inputNum;
+       
+        }
     }
 
 

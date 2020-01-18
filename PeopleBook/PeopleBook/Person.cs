@@ -17,7 +17,7 @@ namespace PeopleBook
             firstName = null;
             lastName = null;
             //address = null;
-            email = null;
+            email = new Email();
         }
 
         /**************************
@@ -35,7 +35,8 @@ namespace PeopleBook
         ***************************************************/
         public void Display()
         {
-            Console.WriteLine(String.Format("{0} {1} | {2}\n", firstName, lastName, email));
+            
+            Console.WriteLine(String.Format("\n{0} {1} | {2}\n", firstName, lastName, email.GetEmail())) ;
         }
 
         /**************************************************
@@ -63,12 +64,13 @@ namespace PeopleBook
             bool isValidAddress = false;
             string emailAddress = null;
 
-            while (!isValidAddress){
+            while (!isValidAddress)
+            {
                 Console.Write("Email address: ");
                 emailAddress = Console.ReadLine();
                 isValidAddress = this.email.IsValid(emailAddress);
             }
-
+        
             SetEmail(emailAddress);
         }
 
