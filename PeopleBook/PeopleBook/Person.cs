@@ -59,6 +59,7 @@ namespace PeopleBook
             SetLastName(Console.ReadLine());
         }
 
+
         public void AskEmail()
         {
             bool isValidAddress = false;
@@ -72,6 +73,29 @@ namespace PeopleBook
             }
         
             SetEmail(emailAddress);
+        }
+
+
+        public void UpdatePerson()
+        {
+            int input = 0;
+
+            Console.WriteLine("1 | Fix first name");
+            Console.WriteLine("2 | Fix last name");
+            Console.WriteLine("3 | Fix email address");
+            Console.WriteLine("4 | Never mind, don't need to fix anything");
+            input = Convert.ToInt16(Console.ReadLine());
+
+            // check the input number
+            if (input < 1 || input > 4)
+                Console.WriteLine("Please choose 1-4");
+
+            if (input == 1)
+                AskFirstName();
+            if (input == 2)
+                AskLastName();
+            if (input == 3)
+                AskEmail();
         }
 
         /*************************************************

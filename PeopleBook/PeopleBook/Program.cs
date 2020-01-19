@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 
 namespace PeopleBook
 {
@@ -8,6 +9,7 @@ namespace PeopleBook
         static void Main(string[] args)
         {
             Boolean on = true;
+            List<Person> people = new List<Person>();
 
             while (on)
             {
@@ -45,6 +47,7 @@ namespace PeopleBook
                         {
                             done = true;
                             Operations.WriteData(ref person);
+                            people.Add(person);
                         }
                         else
                         {
@@ -52,26 +55,17 @@ namespace PeopleBook
 
                             while (!updated)
                             {
-                                int inputNum = WhatToFix();
-
-                                if(inputNum == 1)
-                                    person.AskFirstName();
-                                if(inputNum == 2)
-                                    person.AskLastName();
-                                if(inputNum == 3)
-                                    person.AskEmail();
-
+                                person.UpdatePerson();
                                 person.Display();
-                                char doneyet = ConfirmData();
-                                if(doneyet.Equals('y') || doneyet.Equals('Y'))
+                                char confirmation = ConfirmData();
+                                if(confirmation.Equals('y') || confirmation.Equals('Y'))
                                 {
                                     updated = true;
                                     Operations.WriteData(ref person);
                                     done = true;
+                                    people.Add(person);
                                 }
-
                             }
-
                         }
                     }
                 }
@@ -113,31 +107,6 @@ namespace PeopleBook
             return response;
         }
 
-        static private int WhatToFix()
-        {
-            bool done = false;
-            int inputNum = 0;
-
-            while (!done)
-            {
-                Console.WriteLine("1 | Fix first name");
-                Console.WriteLine("2 | Fix last name");
-                Console.WriteLine("3 | Fix email address");
-                Console.WriteLine("4 | Never mind, don't need to fix anything");
-                inputNum = Convert.ToInt16(Console.ReadLine());
-
-                // check the input number
-                if (inputNum < 0 || inputNum > 4)
-                    Console.WriteLine("Please choose 1-4");
-                else
-                    done = true;
-            }
-
-            return inputNum;
-       
-        }
     }
-
-
     
 }
