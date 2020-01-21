@@ -1,7 +1,6 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Data.SQLite;
 
 
 namespace PeopleBook
@@ -12,9 +11,8 @@ namespace PeopleBook
         {
             Boolean on = true;
             List<Person> people = new List<Person>();
-            SQLiteConnection sqlite_conn = CreateConnection();
 
-            while (on)
+            while(on)
             {
                 char input = AskOperation();
 
@@ -27,7 +25,6 @@ namespace PeopleBook
                     on = false;
                     Console.WriteLine("Bye");
                     Environment.Exit(0);
-                    sqlite_conn.Close();
                 }
                 else if (input.Equals('i') || input.Equals('I'))
                 {
@@ -37,6 +34,7 @@ namespace PeopleBook
                     while (!done)
                     {
                         // Gather information
+                        person.SetId(people.Count + 1);
                         person.AskFirstName();
                         person.AskLastName();
                         person.AskEmail();
@@ -75,23 +73,6 @@ namespace PeopleBook
                 }
             }
             
-        }
-
-        static SQLiteConnection CreateConnection()
-        {
-            SQLiteConnection connection = new SQLiteConnection("Data Source = database.db;Version=3;New=True;Compress=True");
-
-            try
-            {
-                connection.Open();
-            }
-            catch(SQLiteException e)
-            {
-                Console.Write(e.Message);
-            }
-
-
-            return connection;
         }
 
         static private char AskOperation()

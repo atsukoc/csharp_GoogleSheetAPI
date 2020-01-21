@@ -72,11 +72,11 @@ namespace PeopleBook
             SheetsService service = CreateGoogleSheetService(ref credential);
 
             // find out the current number of rows in the spreadsheet
-            String currentRange = String.Format("{0}!A1:C", SheetName);
+            String currentRange = String.Format("{0}!A1:D", SheetName);
             int rowIndex = CountRows(service, currentRange) + 1;
 
             // The A1 notation of the values to update
-            string newRange = String.Format("{0}!A{1}:C{1}", SheetName, rowIndex);
+            string newRange = String.Format("{0}!A{1}:D{1}", SheetName, rowIndex);
 
             // How the input data should be interpreted
             SpreadsheetsResource.ValuesResource.UpdateRequest.ValueInputOptionEnum valueInputOption =
@@ -84,10 +84,11 @@ namespace PeopleBook
 
             // Create and set ValueRange. This is where you set the values to write to the google sheet.
             ValueRange requestBody = new ValueRange();
+            string id = person.GetId().ToString();
             string firstName = person.GetFirstName();
             string lastName = person.GetLastname();
             string email = person.GetEmail();
-            var values = new List<Object>() { firstName, lastName, email };
+            var values = new List<Object>() { id, firstName, lastName, email };
             requestBody.Values = new List<IList<Object>> { values };
 
             // Create UpdateRequest object
@@ -130,7 +131,7 @@ namespace PeopleBook
 
             // Define request parameters.
             SheetsService service = CreateGoogleSheetService(ref credential);
-            String range = String.Format("{0}!A2:C", SheetName);
+            String range = String.Format("{0}!A2:D", SheetName);
             SpreadsheetsResource.ValuesResource.GetRequest request =
                     service.Spreadsheets.Values.Get(SpreadsheetId, range);
 
@@ -144,17 +145,18 @@ namespace PeopleBook
                 foreach (var row in values)
                 {
                     int count = row.Count;
-                    if(row.Count == 3)
+                    if(row.Count == 4)
                     {
-                        Person person = new Person(row[0].ToString(), row[1].ToString(), new Email(row[2].ToString()));
+                        Person person = new Person(int.Parse(row[0].ToString()), row[1].ToString(), row[2].ToString(), new Email(row[3].ToString()));
                         //Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
                         list.Add(person);
                     }
-                    if(row.Count == 2)
+                    if(row.Count == 3)
                     {
                         Person person = new Person();
-                        person.SetFirstName(row[0].ToString());
-                        person.SetLastName(row[1].ToString());
+                        person.SetId(int.Parse(row[0].ToString()));
+                        person.SetFirstName(row[1].ToString());
+                        person.SetLastName(row[2].ToString());
                         list.Add(person);
                         //Console.WriteLine(String.Format("{0} {1}", person.GetFirstName(), person.GetLastname()));
                     }
@@ -162,7 +164,7 @@ namespace PeopleBook
 
                 foreach(Person person in list)
                 {
-                    Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
+                    Console.WriteLine(String.Format("{0}. {1} {2} | {3}", person.GetId(), person.GetFirstName(), person.GetLastname(), person.GetEmail()));
                 }
             }
             else

@@ -23,8 +23,9 @@ namespace PeopleBook
         /**************************
          * Non-default constructor
          **************************/
-        public Person(string first_name, string last_name, Email email)
+        public Person(int id, string first_name, string last_name, Email email)
         {
+            this.id = id;
             firstName = first_name;
             lastName = last_name;
             this.email = email;
@@ -36,7 +37,7 @@ namespace PeopleBook
         public void Display()
         {
             
-            Console.WriteLine(String.Format("\n{0} {1} | {2}\n", firstName, lastName, email.GetEmail())) ;
+            Console.WriteLine(String.Format("\n{0} {1} {2} | {3}\n", id, firstName, lastName, email.GetEmail())) ;
         }
 
         /**************************************************
@@ -118,7 +119,17 @@ namespace PeopleBook
             this.email.SetEmail(email);
 
         }
-        
+
+        public void SetId(int id)
+        {
+            this.id = id;
+        }
+
+        public int GetId()
+        {
+            return id;
+        }
+
         public string GetFirstName()
         {
             return firstName;
