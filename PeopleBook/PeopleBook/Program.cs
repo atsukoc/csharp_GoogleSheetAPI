@@ -1,6 +1,8 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
+
 
 namespace PeopleBook
 {
@@ -10,6 +12,7 @@ namespace PeopleBook
         {
             Boolean on = true;
             List<Person> people = new List<Person>();
+            SQLiteConnection sqlite_conn = CreateConnection();
 
             while (on)
             {
@@ -17,13 +20,14 @@ namespace PeopleBook
 
                 if (input.Equals('r') || input.Equals('R'))
                 {
-                    Operations.ReadData();
+                    Operations.ReadData(ref people);
                 }
                 else if (input.Equals('x') || input.Equals('X'))
                 {
                     on = false;
                     Console.WriteLine("Bye");
                     Environment.Exit(0);
+                    sqlite_conn.Close();
                 }
                 else if (input.Equals('i') || input.Equals('I'))
                 {
@@ -71,6 +75,23 @@ namespace PeopleBook
                 }
             }
             
+        }
+
+        static SQLiteConnection CreateConnection()
+        {
+            SQLiteConnection connection = new SQLiteConnection("Data Source = database.db;Version=3;New=True;Compress=True");
+
+            try
+            {
+                connection.Open();
+            }
+            catch(SQLiteException e)
+            {
+                Console.Write(e.Message);
+            }
+
+
+            return connection;
         }
 
         static private char AskOperation()

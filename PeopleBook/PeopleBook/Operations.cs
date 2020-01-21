@@ -124,7 +124,7 @@ namespace PeopleBook
         /************************************************************************
         * This method displays all the rows in the google sheet
         * **********************************************************************/
-        public static void ReadData()
+        public static void ReadData(ref List<Person> list)
         {
             UserCredential credential = GetCredential();
 
@@ -147,15 +147,22 @@ namespace PeopleBook
                     if(row.Count == 3)
                     {
                         Person person = new Person(row[0].ToString(), row[1].ToString(), new Email(row[2].ToString()));
-                        Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
+                        //Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
+                        list.Add(person);
                     }
                     if(row.Count == 2)
                     {
                         Person person = new Person();
                         person.SetFirstName(row[0].ToString());
                         person.SetLastName(row[1].ToString());
-                        Console.WriteLine(String.Format("{0} {1}", person.GetFirstName(), person.GetLastname()));
+                        list.Add(person);
+                        //Console.WriteLine(String.Format("{0} {1}", person.GetFirstName(), person.GetLastname()));
                     }
+                }
+
+                foreach(Person person in list)
+                {
+                    Console.WriteLine(String.Format("{0} {1} | {2}", person.GetFirstName(), person.GetLastname(), person.GetEmail()));
                 }
             }
             else
