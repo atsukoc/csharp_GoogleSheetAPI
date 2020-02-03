@@ -4,9 +4,3 @@
 Ultimately, I would like to integrate Gmail API and Google Forms in this as well.
  
 </p>
-
-
-
-<p>
-Demo video https://www.youtube.com/watch?v=GhDEiJ0_UHU (As of Feb 2020)
-  </p>
