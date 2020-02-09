@@ -1,24 +1,41 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Gmail.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace PeopleBook
 {
     public class Program
     {
+
         static void Main(string[] args)
         {
             Boolean on = true;
             List<Person> people = new List<Person>();
 
-            while(on)
+            while (on)
             {
+               
                 char input = AskOperation();
+
 
                 if (input.Equals('r') || input.Equals('R'))
                 {
                     Operations.ReadData(ref people);
+
+
+                    Operations.GmailApi();
+
                 }
                 else if (input.Equals('x') || input.Equals('X'))
                 {
@@ -60,7 +77,7 @@ namespace PeopleBook
                                 person.UpdatePerson();
                                 person.Display();
                                 char confirmation = ConfirmData();
-                                if(confirmation.Equals('y') || confirmation.Equals('Y'))
+                                if (confirmation.Equals('y') || confirmation.Equals('Y'))
                                 {
                                     updated = true;
                                     Operations.WriteData(ref person);
@@ -72,7 +89,8 @@ namespace PeopleBook
                     }
                 }
             }
-            
+
+
         }
 
         static private char AskOperation()
@@ -97,7 +115,7 @@ namespace PeopleBook
                     charInput == 'x')
                     done = true;
             }
-   
+
             return charInput;
         }
 
@@ -108,7 +126,8 @@ namespace PeopleBook
             char response = Convert.ToChar(r);
             return response;
         }
-
     }
-    
 }
+    
+    
+
