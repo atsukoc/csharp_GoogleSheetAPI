@@ -127,6 +127,10 @@ namespace PeopleBook
         * **********************************************************************/
         public static void ReadData(ref List<Person> list)
         {
+            // clear the list
+            if (list.Count > 0)
+                list.Clear();
+
             UserCredential credential = GetCredential();
 
             // Define request parameters.
